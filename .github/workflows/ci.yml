@@ -29,6 +29,7 @@ jobs:
 
       - name: install Dist::Zilla missing deps
         run: |
+          cpanm --notest File::LibMagic
           cpanm Dist::Zilla::App::Command::cover
           dzil authordeps --missing | cpanm --notest
           dzil listdeps --author --missing | cpanm --notest
