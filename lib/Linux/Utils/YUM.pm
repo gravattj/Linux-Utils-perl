@@ -218,9 +218,6 @@ Returns: ArrayRef[Str] or ArrayRef[HashRef]
   $aref = $yum->list ([installed => 0|1],
                       [repoId    => $repoId]);
 
- Positional params not supported for this method due to
- the volume of options.
-  
 =item args:
 
 =over
