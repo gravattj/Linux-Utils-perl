@@ -24,12 +24,14 @@ jobs:
 #          - 'latest'
     name: Perl ${{ matrix.perl-version }}
     steps:
+      - name: install extra OS pkgs
+        run: apt-get install libmagic-dev
+
       - name: repo checkout
         uses: actions/checkout@v2
 
       - name: install Dist::Zilla missing deps
         run: |
-          cpanm --notest File::LibMagic
           cpanm Dist::Zilla::App::Command::cover
           dzil authordeps --missing | cpanm --notest
           dzil listdeps --author --missing | cpanm --notest
