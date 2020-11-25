@@ -1,0 +1,39 @@
+# vim: tabstop=2 softtabstop=2 expandtab
+
+name: build
+
+on:
+    push:
+        branches: '*'
+    pull_request:
+        branches: '*'
+    schedule:
+        - cron: '42 5 * * 0'
+
+jobs:
+  perl-job:
+    runs-on: ubuntu-latest
+    container:
+      image: perldocker/perl-tester:${{ matrix.perl-version }}     # https://hub.docker.com/r/perldocker/perl-tester
+    strategy:
+      fail-fast: false
+      matrix:
+        perl-version:
+          - '5.30'
+#          - '5.32'
+#          - 'latest'
+    name: Perl ${{ matrix.perl-version }}
+    steps:
+      - name: repo checkout
+        uses: actions/checkout@v2
+
+      - name: install Dist::Zilla missing deps
+        run: |
+          cpanm Dist::Zilla::App::Command::cover
+          dzil authordeps --missing | cpanm --notest
+          dzil listdeps --author --missing | cpanm --notest
+
+      - name: run unit tests and push coverage report
+        run: dzil cover -report codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
