@@ -24,6 +24,8 @@ Linux::Utils - An collection of utilities for working with Linux.
 
 =item L<Linux::Utils::YUM>
 
+=back
+
 =cut
 
 ########################################################
