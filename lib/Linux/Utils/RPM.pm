@@ -75,6 +75,49 @@ method queryAll (Str :$rpmName) {
 	return $stdout;
 }
 
+=head2 queryFileOwner
+
+Query for the package owner of a given file.
+
+Returns: Str|Undef
+
+=over
+
+=item usage:
+
+ $owner = $rpm->queryFileOwner(file => $file);
+ 
+=item args:
+
+=over
+
+=item file [Str] 
+
+The name of the file you wish to search with.
+
+=back
+
+=back
+
+=cut
+
+method queryFileOwner (Str :$file!) {
+
+    my @cmd;
+    push @cmd, 'rpm';
+    push @cmd, '--query';
+    push @cmd, '--file';
+    push @cmd, $file;
+
+    my ( $stdout, $stderr, $exit ) =
+      $self->Spawn->capture( cmd => \@cmd, wantArrayRef => 0 );
+    if ($exit) {
+        confess $stderr;
+    }
+
+    return $stdout;
+}
+
 =head2 queryList
 
 List files in package.

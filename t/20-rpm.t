@@ -21,6 +21,7 @@ SKIP: {
     doRpmQueryAll($rpm);
     doRpmQueryAllByName($rpm, getRandomWildcardRpmName($rpm));
     doRpmQueryList($rpm);
+    doRpmQueryFileOwner($path); 
 }
 
 done_testing;
@@ -48,6 +49,13 @@ sub doRpmQueryList {
     
     my $list = $rpm->queryList(rpmName => $rpmName);
     ok(ref($list) eq 'ARRAY');
+}
+
+sub doRpmQueryFileOwner {
+    my $file = shift;
+    
+    my $rpm_name = $rpm->queryFileOwner(file => $file);
+    ok($rpm_name);
 }
 
 sub doRpmQueryAll {
